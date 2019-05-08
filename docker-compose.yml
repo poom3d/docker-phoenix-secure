@@ -18,11 +18,15 @@ services:
     hostname: kdc.kerberos.com
     environment:
       REALM: EXAMPLE.COM
-      DOMAIN_REALM: kdc.kerberos.com
+      DOMAIN_REALM: EXAMPLE.COM
+      TZ: Asia/Bangkok
+    ports:
+      - 88:88/udp
+      - 749:749
     volumes:
       - "./config_files/krb5.conf:/etc/krb5.conf"
       - "/dev/urandom:/dev/random"
-      - "/etc/localtime:/etc/localtime:ro"
+        #- "/etc/localtime:/etc/localtime:ro"
 
   phoenix-secure:
     networks:
@@ -38,8 +42,15 @@ services:
       - "kdc.kerberos.com kdc:172.21.0.2"
     environment:
       KRB_REALM: EXAMPLE.COM
-      DOMAIN_REALM: kdc.kerberos.com
+      DOMAIN_REALM: EXAMPLE.COM
       FQDN: phoenix.docker.com
+      TZ: Asia/Bangkok
+    ports:
+      - 2181:2181
+      - 50010:50010
+      - 50070:50070
+      - 50075:50075
+      - 50090:50090
     volumes:
       - "./config_files/krb5.conf:/etc/krb5.conf"
-      - "/etc/localtime:/etc/localtime:ro"
+        #- "/var/db/timezone/zoneinfo/Asia/Bangkok:/etc/localtime:ro"
